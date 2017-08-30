@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Exercicios>
+	<Exercicio Nome = "Elevação da perna">
+		<Tipo>Alternado</Tipo>
+		<Descanso>50</Descanso>
+	</Exercicio>
+	<Exercicio Nome = "Extensão do joelho">
+		<Tipo>Alternado</Tipo>
+		<Descanso>30</Descanso>
+	</Exercicio>
+	<Exercicio Nome = "Adução e abdução dos joelhos">
+		<Tipo>Simples</Tipo>
+		<Descanso>40</Descanso>
+	</Exercicio>
+	<Exercicio Nome = "Ponte">
+		<Tipo>Simples</Tipo>
+		<Descanso>50</Descanso>
+	</Exercicio>
+	<Exercicio Nome = "Rosca triceps">
+		<Tipo>Lado</Tipo>
+		<Descanso>40</Descanso>
+	</Exercicio>
+	<Exercicio Nome = "Elevação lateral da perna">
+		<Tipo>Lado</Tipo>
+		<Descanso>50</Descanso>
+	</Exercicio>
+	<Exercicio Nome = "Flexão do joelho">
+		<Tipo>Alternado</Tipo>
+		<Descanso>30</Descanso></Exercicio>
+	<Exercicio Nome = "Extensão da perna sentado">
+		<Tipo>Alternado</Tipo>
+		<Descanso>40</Descanso>
+	</Exercicio>
+		<Exercicio Nome = "Abdução dos braços">
+		<Tipo>Simples</Tipo>
+		<Descanso>40</Descanso>
+	</Exercicio>
+	<Exercicio Nome = "Rosca biceps">
+		<Tipo>Lado</Tipo>
+		<Descanso>40</Descanso>
+	</Exercicio>
+	<Exercicio Nome = "Rosca pulso">
+		<Tipo>Simples</Tipo>
+		<Descanso>40</Descanso>
+	</Exercicio>
+</Exercicios>
