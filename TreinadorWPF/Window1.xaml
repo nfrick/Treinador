@@ -6,6 +6,9 @@
         xmlns:local="clr-namespace:TreinadorWPF"
         mc:Ignorable="d"
         Title="Treinador" Width="1240" Height="780" KeyDown="Window_KeyDown" ContentRendered="Window_ContentRendered" Icon="pack://siteoforigin:,,,/Resources/Whistle.ico">
+    <Window.Resources>
+        <local:RadioButtonCheckedConverter x:Key="RadioButtonCheckedConverter" />
+    </Window.Resources>
     <Grid x:Name="GridMain" Background="DarkSlateGray" Margin="0,0,0.4,-1">
         <Grid.RowDefinitions>
             <RowDefinition Height="125*"/>
@@ -17,7 +20,7 @@
             <ColumnDefinition MinWidth="300" Width="751*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock x:Name="TextBlockExercicio" Margin="0,10,-0.2,96.2" TextAlignment="Center" Grid.ColumnSpan="2" FontSize="78" FontFamily="Segoe WP N Black" Grid.RowSpan="3">
+        <TextBlock x:Name="TextBlockExercicio" Text="{Binding Nome}" Margin="0,10,-0.2,96.2" TextAlignment="Center" Grid.ColumnSpan="2" FontSize="78" FontFamily="Segoe WP N Black" Grid.RowSpan="3">
             <TextBlock.Effect>
                 <DropShadowEffect/>
             </TextBlock.Effect>
@@ -36,17 +39,26 @@
                     <DropShadowEffect/>
                 </GroupBox.Effect>
                 <StackPanel Margin="0">
-                    <RadioButton x:Name="RadioButtonSimples" Content="Simples" Margin="15,2,0,2" Foreground="#FFF4F605" FontSize="36" VerticalContentAlignment="Center" Checked="RadioButton_Checked" Cursor="Hand"/>
-                    <RadioButton x:Name="RadioButtonAlternado" Content="Alternado" Margin="15,2,0,2" Foreground="#FFFC5935" FontSize="36" VerticalContentAlignment="Center" Checked="RadioButton_Checked" Cursor="Hand"/>
-                    <RadioButton x:Name="RadioButtonLado" Content="Lado-Lado" Margin="15,2,0,2" Foreground="#FF05F611" FontSize="36" VerticalContentAlignment="Center" Checked="RadioButton_Checked" Cursor="Hand"/>
+                    <RadioButton x:Name="RadioButtonSimples" 
+                                 IsChecked="{Binding Tipo, Converter={StaticResource RadioButtonCheckedConverter}, 
+                                    ConverterParameter={x:Static local:TipoExercicio.Simples}}" 
+                                 Content="Simples" Margin="15,2,0,2" Foreground="#FFF4F605" FontSize="36" VerticalContentAlignment="Center" Checked="RadioButton_Checked" Cursor="Hand"/>
+                    <RadioButton x:Name="RadioButtonAlternado" 
+                                 IsChecked="{Binding Tipo, Converter={StaticResource RadioButtonCheckedConverter}, 
+                                    ConverterParameter={x:Static local:TipoExercicio.Alternado}}" 
+                                 Content="Alternado" Margin="15,2,0,2" Foreground="#FFFC5935" FontSize="36" VerticalContentAlignment="Center" Checked="RadioButton_Checked" Cursor="Hand"/>
+                    <RadioButton x:Name="RadioButtonLado" 
+                                 IsChecked="{Binding Tipo, Converter={StaticResource RadioButtonCheckedConverter}, 
+                                    ConverterParameter={x:Static local:TipoExercicio.Lado}}" 
+                                 Content="Lado" Margin="15,2,0,2" Foreground="#FF05F611" FontSize="36" VerticalContentAlignment="Center" Checked="RadioButton_Checked" Cursor="Hand"/>
                 </StackPanel>
             </GroupBox>
-            <TextBlock x:Name="TextBlockDescanso" Text="Descanso: 50s" VerticalAlignment="Top" Foreground="#FF04FFF1" TextAlignment="Center" Margin="5,30,5,0" FontSize="32">
+            <TextBlock x:Name="TextBlockDescanso" Text="{Binding ElementName=SliderDescanso, Path=Value, StringFormat=Descanso: {0}s}" VerticalAlignment="Top" Foreground="#FF04FFF1" TextAlignment="Center" Margin="5,30,5,0" FontSize="32">
                 <TextBlock.Effect>
                     <DropShadowEffect/>
                 </TextBlock.Effect>
             </TextBlock>
-            <Slider x:Name="SliderDescanso" Margin="15,5,15,0" ValueChanged="SliderDescanso_ValueChanged" SmallChange="5" TickFrequency="5" LargeChange="10" TickPlacement="TopLeft" Cursor="ScrollWE">
+            <Slider x:Name="SliderDescanso" Value="{Binding Descanso}" Margin="15,5,15,0" SmallChange="5" TickFrequency="5" LargeChange="10" TickPlacement="TopLeft" Cursor="ScrollWE" Minimum="4" Maximum="60">
                 <Slider.Effect>
                     <DropShadowEffect/>
                 </Slider.Effect>
@@ -58,7 +70,7 @@
             </Button>
         </StackPanel>
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
-            <ProgressBar x:Name="ProgressBarDescanso" Background="DarkSlateGray" BorderThickness="3" ClipToBounds="True" Grid.RowSpan="2" BorderBrush="{x:Null}">
+            <ProgressBar x:Name="ProgressBarDescanso" Maximum="{Binding ElementName=SliderDescanso, Path=Value}" Background="DarkSlateGray" BorderThickness="3" ClipToBounds="True" Grid.RowSpan="2" BorderBrush="{x:Null}">
                 <ProgressBar.Foreground>
                     <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                         <GradientStop Color="#FF514B4B" Offset="0.8"/>
@@ -67,14 +79,17 @@
                     </LinearGradientBrush>
                 </ProgressBar.Foreground>
             </ProgressBar>
-            <TextBlock x:Name="TextSegundos" HorizontalAlignment="Center" VerticalAlignment="Center" Text="0" RenderTransformOrigin="0.5,0.5" Height="102" Width="271" Foreground="White" FontSize="72" TextAlignment="Center" FontFamily="Segoe UI Semibold" Visibility="Hidden">
+            <TextBlock x:Name="TextSegundos" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Height="102" Width="271" Foreground="White" FontSize="72" TextAlignment="Center" FontFamily="Segoe UI Semibold" Visibility="Hidden">
                 <TextBlock.Effect>
                     <DropShadowEffect/>
                 </TextBlock.Effect>
+                <Run Text="{Binding ElementName=ProgressBarDescanso, Path=Value, StringFormat={}{0:00}}"/>
+                <Run Text="{Binding ElementName=SliderDescanso, Path=Value, StringFormat= / {0:00}}" />
             </TextBlock>
         </Grid>
         <StackPanel Grid.Column="1" Margin="5.4,5.2,5.8,9.8" Grid.Row="1" Orientation="Horizontal">
-            <TextBlock x:Name="TextBlockContadorEsquerdo" Text="0" FontSize="500" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe WP N Black" Margin="70,-109.379,0,-17.315" Height="630.054">
+            <TextBlock x:Name="TextBlockContadorEsquerdo" Text="{Binding ContadorEsquerdo, StringFormat={}{0}}" 
+                       FontSize="500" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe WP N Black" Margin="70,-109.379,0,-17.315" Height="630.054">
                 <TextBlock.Effect>
                     <DropShadowEffect/>
                 </TextBlock.Effect>
@@ -85,7 +100,7 @@
                     </LinearGradientBrush>
                 </TextBlock.Foreground>
             </TextBlock>
-            <TextBlock x:Name="TextBlockSeta" Text="t" Width="84" FontSize="90" TextAlignment="Center" VerticalAlignment="Center" Margin="40,200.515,0,196.516" FontFamily="Wingdings 3">
+            <TextBlock x:Name="TextBlockSeta" Text="{Binding Seta}" Width="84" FontSize="90" TextAlignment="Center" VerticalAlignment="Center" Margin="40,200.515,0,196.516" FontFamily="Wingdings 3">
                 <TextBlock.Foreground>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#FF514B4B" Offset="1"/>
@@ -96,15 +111,7 @@
                     <DropShadowEffect/>
                 </TextBlock.Effect>
             </TextBlock>
-            <TextBlock x:Name="TextBlockContadorDireito" Text="0" FontSize="500" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe WP N Black" Margin="50,-107.476,0,-19.218" RenderTransformOrigin="0.5,0.5" Height="630.054">
-                <TextBlock.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform/>
-                        <SkewTransform AngleY="-0.991"/>
-                        <RotateTransform/>
-                        <TranslateTransform Y="-1.782"/>
-                    </TransformGroup>
-                </TextBlock.RenderTransform>
+            <TextBlock x:Name="TextBlockContadorDireito" Text="{Binding ContadorDireito}" FontSize="500" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Segoe WP N Black" Margin="50,-107.476,0,-19.218" RenderTransformOrigin="0.5,0.5" Height="630.054">
                 <TextBlock.Effect>
                     <DropShadowEffect/>
                 </TextBlock.Effect>
