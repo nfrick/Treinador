@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Speech.Synthesis;
 using System.Threading;
@@ -44,7 +45,7 @@ namespace TreinadorWPF {
                 _exercicios = new CollectionView(xml.Root.Descendants("Exercicio")
                     .Select(c => new Exercicio(c)).ToArray());
             }
-            for (var i = 0; i < _exercicios.Count - 2; i++) {
+            for (var i = 0; i < _exercicios.Count - 1; i++) {
                 ((Exercicio)_exercicios.GetItemAt(i)).ProximoExercicio = (Exercicio)_exercicios.GetItemAt(i + 1);
             }
             this.DataContext = _exercicios;

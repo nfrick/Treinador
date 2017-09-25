@@ -58,7 +58,6 @@ namespace TreinadorWPF {
         public bool IsSerieTerminada =>
             (IsEsquerdoTerminado && IsDireitoTerminado) ||
             (IsSimples && IsEsquerdoTerminado);
-
         private bool IsIniciandoSerie => ContadorEsquerdo == 1 && ContadorDireito == 0;
         private int ContadorAtual => IsDireito ? ContadorDireito : ContadorEsquerdo;
 
@@ -108,6 +107,7 @@ namespace TreinadorWPF {
 
             if (IsSerieTerminada) {
                 frase.Append(" Série terminada.");
+                
                 frase.Append(ProximoExercicio == null ? @" Fim da sessão." : $" Próximo exercício {ProximoExercicio.Nome}");
             }
             else if (Tipo == TipoExercicio.Lado && IsEsquerdo && IsEsquerdoTerminado)
