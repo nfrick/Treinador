@@ -155,6 +155,7 @@ namespace TreinadorWPF {
 
             if (exercicio.IsSerieTerminada) {
                 if (_exercicios.CurrentPosition == _exercicios.Count - 1) {
+                    Thread.Sleep(10000);
                     Close();
                 }
                 SliderDescanso.Value = 60;

@@ -15,6 +15,7 @@ namespace TreinadorWPF {
     internal class Exercicio : INotifyPropertyChanged {
         public string Nome { get; set; }
         public TipoExercicio Tipo { get; set; }
+        public int Series { get; set; }
         public int Descanso { get; set; }
         public string Membro { get; set; }
         public char Letra => Membro.Last();
@@ -53,8 +54,8 @@ namespace TreinadorWPF {
         public Exercicio ProximoExercicio { get; set; }
 
         public bool IsSimples => Tipo == TipoExercicio.Simples;
-        public bool IsEsquerdoTerminado => ContadorEsquerdo == 3;
-        public bool IsDireitoTerminado => ContadorDireito == 3;
+        public bool IsEsquerdoTerminado => ContadorEsquerdo == Series;
+        public bool IsDireitoTerminado => ContadorDireito == Series;
         public bool IsSerieTerminada =>
             (IsEsquerdoTerminado && IsDireitoTerminado) ||
             (IsSimples && IsEsquerdoTerminado);
@@ -68,7 +69,7 @@ namespace TreinadorWPF {
                 ContadorEsquerdo += incremento;
         }
 
-        private string Ordinal => _ordinal[ContadorAtual];
+        private string Ordinal => Series == 1 ? "única" : _ordinal[ContadorAtual];
         private static readonly string[] _ordinal = { "", "primeira", "segunda", "terceira" };
 
         public string IniciarRepeticao() {
@@ -96,14 +97,14 @@ namespace TreinadorWPF {
                     throw new InvalidOperationException();
             }
             return (IsIniciandoSerie ? $"{Nome}. " : string.Empty) + (
-                   IsSimples ? $@"Iniciar {Ordinal} repetição"
-                    : $@"Iniciar {Membro} {Lado}{Letra}, {Ordinal} repetição");
+                   IsSimples ? $@"Iniciar {Ordinal} série"
+                    : $@"Iniciar {Membro} {Lado}{Letra}, {Ordinal} série");
         }
 
         public string TerminarRepeticao() {
             var frase = new StringBuilder(IsSimples
-                ? $@"Terminada {Ordinal} repetição."
-                : $@"Terminad{Letra} {Membro} {Lado}{Letra}, {Ordinal} repetição.");
+                ? $@"Terminada {Ordinal} série."
+                : $@"Terminad{Letra} {Membro} {Lado}{Letra}, {Ordinal} série.");
 
             if (IsSerieTerminada) {
                 frase.Append(" Série terminada.");
@@ -145,7 +146,8 @@ namespace TreinadorWPF {
                   (tipo == "Lado" ?
                       TipoExercicio.Lado :
                       TipoExercicio.Simples);
-            Descanso = int.Parse(element.Elements().ElementAt(1).Value);
+            Series = int.Parse(element.Elements().ElementAt(1).Value);
+            Descanso = int.Parse(element.Elements().ElementAt(2).Value);
             Membro = element.Elements().Last().Value;
             Lado = "esquerd";
         }
