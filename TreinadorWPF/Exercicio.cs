@@ -56,10 +56,10 @@ namespace TreinadorWPF {
         public bool IsSimples => Tipo == TipoExercicio.Simples;
         public bool IsEsquerdoTerminado => ContadorEsquerdo == Series;
         public bool IsDireitoTerminado => ContadorDireito == Series;
-        public bool IsSerieTerminada =>
+        public bool IsExercicioTerminado =>
             (IsEsquerdoTerminado && IsDireitoTerminado) ||
             (IsSimples && IsEsquerdoTerminado);
-        private bool IsIniciandoSerie => ContadorEsquerdo == 1 && ContadorDireito == 0;
+        private bool IsIniciandoExercicio => ContadorEsquerdo == 1 && ContadorDireito == 0;
         private int ContadorAtual => IsDireito ? ContadorDireito : ContadorEsquerdo;
 
         public void IncrementaContador(int incremento = 1) {
@@ -96,7 +96,7 @@ namespace TreinadorWPF {
                 default:
                     throw new InvalidOperationException();
             }
-            return (IsIniciandoSerie ? $"{Nome}. " : string.Empty) + (
+            return (IsIniciandoExercicio ? $"{Nome}. " : string.Empty) + (
                    IsSimples ? $@"Iniciar {Ordinal} série"
                     : $@"Iniciar {Membro} {Lado}{Letra}, {Ordinal} série");
         }
@@ -106,8 +106,8 @@ namespace TreinadorWPF {
                 ? $@"Terminada {Ordinal} série."
                 : $@"Terminad{Letra} {Membro} {Lado}{Letra}, {Ordinal} série.");
 
-            if (IsSerieTerminada) {
-                frase.Append(" Série terminada.");
+            if (IsExercicioTerminado) {
+                frase.Append(" Exercício terminado.");
                 
                 frase.Append(ProximoExercicio == null ? @" Fim da sessão." : $" Próximo exercício {ProximoExercicio.Nome}");
             }

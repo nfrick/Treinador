@@ -63,7 +63,7 @@
                     <DropShadowEffect/>
                 </Slider.Effect>
             </Slider>
-            <Button x:Name="ButtonTerminado" Content="Terminado" Margin="15,30,15,0" FontSize="32" Click="ButtonTerminado_Click" Height="58.564" FontFamily="Segoe WP N Black">
+            <Button x:Name="ButtonTerminado" Content="Iniciar" Margin="15,30,15,0" FontSize="32" Click="ButtonTerminado_Click" Height="58.564" FontFamily="Segoe WP N Black">
                 <Button.Effect>
                     <DropShadowEffect/>
                 </Button.Effect>

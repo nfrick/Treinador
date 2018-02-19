@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Speech.Synthesis;
 using System.Threading;
@@ -55,7 +54,7 @@ namespace TreinadorWPF {
             ExercicioColor = TextBlockExercicio.Foreground;
             NumeroInativoColor = TextBlockContadorDireito.Foreground;
             NumeroAtivoColor = TextBlockContadorEsquerdo.Foreground;
-            AnunciarInicio();
+            //AnunciarInicio();
         }
 
         private void Timer_Tick(object sender, EventArgs e) {
@@ -67,7 +66,7 @@ namespace TreinadorWPF {
             catch (Exception) {
 
                 timer.Stop();
-                if (_autoMode && ((Exercicio)_exercicios.CurrentItem).IsSerieTerminada) {
+                if (_autoMode && ((Exercicio)_exercicios.CurrentItem).IsExercicioTerminado) {
                     _exercicios.MoveCurrentToNext();
                 }
                 ToggleControles();
@@ -142,18 +141,22 @@ namespace TreinadorWPF {
         }
 
         private void ButtonTerminado_Click(object sender, RoutedEventArgs e) {
-            Terminado();
+            if (ButtonTerminado.Content == "Terminado")
+                Terminado();
+            else {
+                AnunciarInicio();
+            }
         }
 
         private void Terminado() {
             var exercicio = (Exercicio)_exercicios.CurrentItem;
-            if (exercicio.IsSerieTerminada) {
+            if (exercicio.IsExercicioTerminado) {
                 _playerBing.Play();
                 Thread.Sleep(1000);
             }
             _speaker.SpeakAsync(exercicio.TerminarRepeticao());
 
-            if (exercicio.IsSerieTerminada) {
+            if (exercicio.IsExercicioTerminado) {
                 if (_exercicios.CurrentPosition == _exercicios.Count - 1) {
                     Thread.Sleep(10000);
                     Close();
@@ -173,6 +176,7 @@ namespace TreinadorWPF {
         }
 
         private void AnunciarInicio() {
+            ButtonTerminado.Content = "Terminado";
             var exercicio = (Exercicio)_exercicios.CurrentItem;
             _speaker.Speak(exercicio.IniciarRepeticao());
             _playerWhistle.Play();
